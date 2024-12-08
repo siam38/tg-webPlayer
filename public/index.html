@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Player</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@latest/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet">
+  <link href="//vjs.zencdn.net/8.21.1/video-js.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen">
+
+  <div class="container mx-auto px-4">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="fixed inset-0 bg-gray-800 bg-opacity-90 flex items-center justify-center z-50">
+      <div class="text-center">
+        <div class="loading loading-ring loading-lg"></div>
+        <p class="mt-4 text-lg">Please wait, loading the video...</p>
+      </div>
+    </div>
+
+  
+    <div class="bg-gray-800 rounded-lg shadow-lg p-6">
+      <!-- Dynamic Title -->
+      <h1 id="video-title" class="text-lg font-bold mb-4 text-center cursor-pointer" onclick="toggleTitle()">
+      </h1>
+
+      <div class="relative">
+        <video id="video-player" class="video-js vjs-default-skin" controls preload="auto" data-setup="{}">
+          <source src="" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="actions flex justify-center mt-6">
+        <a id="download-link" href="" target="_blank" class="btn btn-success btn-lg">Download Video</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="//vjs.zencdn.net/8.21.1/video.min.js"></script>
+  <script>
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const videoUrl = urlParams.get('videoUrl');
+    const title = urlParams.get('title') || 'Untitled Video';
+
+    if (!videoUrl) {
+      document.body.innerHTML = '<p class="text-center text-red-500 mt-20">Error: No video URL provided.</p>';
+    } else {    document.querySelector('#video-player source').src = videoUrl;  
+      document.querySelector('#download-link').href = videoUrl;  
+      document.querySelector('#video-title').textContent = title.length > 45 ? title.slice(0, 45) + '...' : title;
+
+    
+      videojs('video-player', {
+        autoplay: false,
+        controls: true,
+        preload: 'auto',
+        fluid: true,
+      });
+
+      
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          document.getElementById('loading-screen').style.display = 'none';
+        }, 3000);
+      });
+    }
+
+  
+    function toggleTitle() {
+      const fullTitle = urlParams.get('title') || 'Untitled Video';
+      const titleElement = document.querySelector('#video-title');
+      if (titleElement.textContent.includes('...')) {
+        titleElement.textContent = fullTitle;
+      } else {
+        titleElement.textContent = fullTitle.slice(0, 40) + '...';
+      }
+    }
+  </script>
+</body>
+</html>
