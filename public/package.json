@@ -1,0 +1,21 @@
+{
+  "name": "video-player-app",
+  "version": "1.0.0",
+  "description": "A simple video player with dynamic title and video URL handling",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "video",
+    "express",
+    "player",
+    "dynamic-title",
+    "html5"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
